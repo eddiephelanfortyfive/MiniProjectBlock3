@@ -3,21 +3,60 @@ import sqlite3
 # Connect to the database
 con = sqlite3.connect("ClubHub.db")
 cur = con.cursor()
+##cur.execute("""drop table if exists users""")
+
 
 # Create the users table
 cur.execute("""
 CREATE TABLE IF NOT EXISTS users (
-    user_id INTEGER PRIMARY KEY,
-    username VARCHAR(30) UNIQUE,
-    first_name VARCHAR(50),
-    last_name VARCHAR(50),
-    password VARCHAR(30),
-    email VARCHAR(255) UNIQUE,
+    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL UNIQUE,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    password TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
     is_student BOOLEAN,  
     is_coordinator BOOLEAN,
     is_admin BOOLEAN
 )
 """)
+
+
+cur.execute("""
+CREATE TABLE IF NOT EXISTS clubs (
+    club_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    club_name  TEXT NOT NULL UNIQUE,
+    club_description  TEXT NOT NULL,
+    coordinator_id INTEGER,
+    club_approval BOOLEAN
+)
+""")
+
+cur.execute("""
+CREATE TABLE IF NOT EXISTS members (
+    club_id INTEGER,
+    user_id INTEGER,
+    user_approval BOOLEAN,
+    is_coordinator BOOLEAN,
+    FOREIGN KEY (club_id) REFERENCES clubs(club_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+)
+""")
+
+cur.execute("""
+CREATE TABLE IF NOT EXISTS events (
+    event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    club_id INTEGER,
+    event_title TEXT NOT NULL,
+    event_description TEXT NOT NULL,
+    event_venue TEXT NOT NULL,
+    event_date_time TIMESTAMP NOT NULL,
+    FOREIGN KEY (club_id) REFERENCES clubs(club_id)
+)
+""")
+
+
+
 
 # Insert a sample user
 #sample_user = ('john_doe', 'John', 'Doe', 'password123', 'john@example.com', 1, 0, 0)
@@ -27,14 +66,7 @@ CREATE TABLE IF NOT EXISTS users (
 #""")
 
 
-# Commit the transaction
+# Commits the transaction
 con.commit()
-
-# Fetch and print all users from the table
-cur.execute("SELECT * FROM users")
-users = cur.fetchall()
-for user in users:
-    print(user)
-
-# Close the connection
+# Closes the connection
 con.close()
