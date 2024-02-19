@@ -3,7 +3,7 @@ import sqlite3
 # Connect to the database
 con = sqlite3.connect("ClubHub.db")
 cur = con.cursor()
-##cur.execute("""drop table if exists users""")
+cur.execute("""drop table if exists users""")
 
 
 # Create the users table
@@ -15,9 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
     last_name TEXT NOT NULL,
     password TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    is_student BOOLEAN,  
-    is_coordinator BOOLEAN,
-    is_admin BOOLEAN
+    user_type TEXT NOT NULL
 )
 """)
 
