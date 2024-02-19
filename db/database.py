@@ -1,5 +1,8 @@
 import sqlite3
 
+
+
+
 # Connect to the database
 con = sqlite3.connect("ClubHub.db")
 cur = con.cursor()
@@ -58,10 +61,10 @@ CREATE TABLE IF NOT EXISTS events (
 
 # Insert a sample user
 #sample_user = ('john_doe', 'John', 'Doe', 'password123', 'john@example.com', 1, 0, 0)
-#cur.execute("""
-#INSERT INTO users (username, first_name, last_name, password, email, is_student, is_coordinator, is_admin)
-#VALUES ('markSmith', 'mark', 'Smith', 'padwoord', 'email@gmail.com', 1, 0, 1)
-#""")
+cur.execute("""
+INSERT INTO users (username, first_name, last_name, password, email, user_type)
+VALUES ('markSmith', 'mark', 'Smith', 'padwoord', 'email@gmail.com', 'student')
+""")
 
 
 # Commits the transaction
